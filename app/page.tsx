@@ -10,7 +10,7 @@ export const columns = [
   { name: "CIUDAD", uid: "city", sortable: true },
   { name: "DIRECCIÓN", uid: "address", sortable: true },
   { name: "NIT", uid: "nit" },
-  { name: "HABITACIONES", uid: "max_rooms" },
+  { name: "MAX. HABITACIONES", uid: "max_rooms" },
   { name: "ACCIÓN", uid: "actions" },
 ];
 
