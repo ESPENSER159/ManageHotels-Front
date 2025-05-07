@@ -29,10 +29,12 @@ import {
   addToast,
   Tooltip,
   User,
+  Image,
 } from "@heroui/react";
-import { Link } from '@heroui/link' // Importa el componente Link de la librería Heroui para crear enlaces.
+import { Link } from "@heroui/link"; // Importa el componente Link de la librería Heroui para crear enlaces.
 
-export type IconSvgProps = SVGProps<SVGSVGElement> & { // Define los tipos de propiedades para los íconos SVG.
+export type IconSvgProps = SVGProps<SVGSVGElement> & {
+  // Define los tipos de propiedades para los íconos SVG.
   size?: number;
 };
 
@@ -299,7 +301,6 @@ export default function TableHotels({
   users,
   INITIAL_VISIBLE_COLUMNS,
   setLoading,
-  type,
 }: {
   columns: { uid: string; name: string; sortable?: boolean }[];
   statusOptions: { uid: string; name: string }[];
@@ -383,15 +384,12 @@ export default function TableHotels({
   // Función para eliminar un hotel
   const deleteHotel = async (hotelId: any) => {
     try {
-      const response = await fetch(
-        `${apiUrl}/api/hotels/${hotelId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
+      const response = await fetch(`${apiUrl}/api/hotels/${hotelId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+      });
 
       if (!response.ok) {
         throw new Error("Error al eliminar el hotel");
@@ -425,16 +423,13 @@ export default function TableHotels({
     },
   ) => {
     try {
-      const response = await fetch(
-        `${apiUrl}/api/hotels/${hotelId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedData),
+      const response = await fetch(`${apiUrl}/api/hotels/${hotelId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(updatedData),
+      });
 
       if (!response.ok) {
         throw new Error("Error al actualizar el hotel");
@@ -462,7 +457,6 @@ export default function TableHotels({
 
     // Según la acción seleccionada (Agregar, Eliminar, Editar), realizar la operación correspondiente
     if (action.action === "Eliminar") {
-
       await deleteHotel(action.id);
 
       addToast({
@@ -470,7 +464,6 @@ export default function TableHotels({
         color: "success",
       });
     } else if (action.action === "Agregar") {
-
       await createHotel({
         name: data.name as string,
         address: data.address as string,
@@ -484,7 +477,6 @@ export default function TableHotels({
         color: "success",
       });
     } else if (action.action === "Editar") {
-
       await updateHotel(action.id, {
         name: data.name as string,
         address: data.address as string,
@@ -575,7 +567,14 @@ export default function TableHotels({
   }, [sortDescriptor, items]);
 
   // Imágenes de los hoteles
-  const listImagesHotels = ["https://www.decameron.com/images/thumbnail/cards/colombia/galeon/hotel.jpg", "https://www.decameron.com/images/thumbnail/cards/colombia/baru/hotel-3.jpg", "https://www.decameron.com/images/thumbnail/cards/colombia/cartagena/hotel-2.jpg", "https://www.decameron.com/images/thumbnail/cards/colombia/san-pedro/hotel-3.jpg", "https://www.decameron.com/images/thumbnail/cards/colombia/aquarium/hotel.jpg", "https://www.decameron.com/images/thumbnail/cards/colombia/isleno/hotel-3.jpg"]
+  const listImagesHotels = [
+    "https://www.decameron.com/images/thumbnail/cards/colombia/galeon/hotel.jpg",
+    "https://www.decameron.com/images/thumbnail/cards/colombia/baru/hotel-3.jpg",
+    "https://www.decameron.com/images/thumbnail/cards/colombia/cartagena/hotel-2.jpg",
+    "https://www.decameron.com/images/thumbnail/cards/colombia/san-pedro/hotel-3.jpg",
+    "https://www.decameron.com/images/thumbnail/cards/colombia/aquarium/hotel.jpg",
+    "https://www.decameron.com/images/thumbnail/cards/colombia/isleno/hotel-3.jpg",
+  ];
 
   // Renderizar las celdas de la tabla
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
@@ -583,13 +582,14 @@ export default function TableHotels({
 
     switch (columnKey) {
       case "name":
+        let setImage =
+          listImagesHotels[Math.floor(Math.random() * listImagesHotels.length)];
 
-        let setImage = listImagesHotels[Math.floor(Math.random() * listImagesHotels.length)]
         return (
           <Tooltip
             content={
               <div className="px-1 py-2">
-                <img
+                <Image
                   alt="Decameron Logo"
                   className="h-40 w-40 "
                   src={setImage}
@@ -602,7 +602,7 @@ export default function TableHotels({
             <User
               avatarProps={{ radius: "lg", src: setImage }}
               name={cellValue}
-            ></User>
+            />
           </Tooltip>
         );
       case "role":
@@ -630,12 +630,16 @@ export default function TableHotels({
           <div className="relative flex justify-end items-center gap-2">
             <div className="relative flex items-center gap-2">
               <Tooltip content="Ver">
-                <Link className="text-lg text-default-400 cursor-pointer active:opacity-50" href={`/${String(user.id)}`}>
+                <Link
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                  href={`/${String(user.id)}`}
+                >
                   <EyeIcon />
                 </Link>
               </Tooltip>
               <Tooltip content="Editar">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                <button
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
                   onClick={() => {
                     onOpen();
                     setAction({
@@ -647,12 +651,14 @@ export default function TableHotels({
                       nit: user.nit,
                       max_rooms: user.max_rooms,
                     });
-                  }}>
+                  }}
+                >
                   <EditIcon />
-                </span>
+                </button>
               </Tooltip>
               <Tooltip color="danger" content="Eliminar">
-                <span className="text-lg text-danger cursor-pointer active:opacity-50"
+                <button
+                  className="text-lg text-danger cursor-pointer active:opacity-50"
                   onClick={() => {
                     onOpen();
                     setAction({
@@ -660,9 +666,10 @@ export default function TableHotels({
                       id: user.id,
                       name: user.name,
                     });
-                  }}>
+                  }}
+                >
                   <DeleteIcon />
-                </span>
+                </button>
               </Tooltip>
             </div>
           </div>
@@ -875,8 +882,8 @@ export default function TableHotels({
                   {action.action === "Eliminar" ? (
                     <div className="flex flex-col gap-2">
                       <p className="text-default-500">
-                        ¿Está seguro de que desea eliminar el hotel "
-                        {action.name}"?
+                        ¿Está seguro de que desea eliminar el hotel &#34;
+                        {action.name}&#34;?
                       </p>
                       <p className="text-default-500">
                         Esta acción no se puede deshacer.

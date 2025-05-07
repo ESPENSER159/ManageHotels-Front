@@ -1,12 +1,11 @@
 // Indica que este archivo se ejecuta en el lado del cliente (no del servidor)
 "use client";
-
 // Importamos hooks de React para manejar estado y efectos
 import { useEffect, useState } from "react";
-
 // Importamos un componente que se usará para mostrar la tabla
-import CreateTable from "@/components/table-hotels";
+import { Image } from "@heroui/react";
 
+import CreateTable from "@/components/table-hotels";
 // Importamos el logo de Decameron
 import logo from "@/public/logo-decameron.png";
 
@@ -72,9 +71,8 @@ export default function Home() {
 
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-
       {/* Mostramos el logo de Decameron */}
-      <img
+      <Image
         alt="Decameron Logo"
         className="h-16 w-auto md:h-20 lg:h-24 mb-10"
         src={logo.src}
@@ -86,8 +84,8 @@ export default function Home() {
         columns={columns}
         setLoading={setLoading}
         statusOptions={statusOptions}
-        users={hotels}
         type="allHotels"
+        users={hotels}
       />
     </section>
   );
