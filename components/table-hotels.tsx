@@ -1,5 +1,7 @@
-"use client";
-import React, { SVGProps } from "react";
+// Importación de dependencias y componentes necesarios
+"use client"; // Directiva que indica que este archivo es específico del cliente, no del servidor.
+import React, { SVGProps } from "react"; // Importa React y las propiedades de SVG.
+// Importación de varios componentes de la biblioteca Heroui para la UI
 import {
   Table,
   TableHeader,
@@ -28,16 +30,18 @@ import {
   Tooltip,
   User,
 } from "@heroui/react";
-import { Link } from '@heroui/link'
+import { Link } from '@heroui/link' // Importa el componente Link de la librería Heroui para crear enlaces.
 
-export type IconSvgProps = SVGProps<SVGSVGElement> & {
+export type IconSvgProps = SVGProps<SVGSVGElement> & { // Define los tipos de propiedades para los íconos SVG.
   size?: number;
 };
 
+// Función para capitalizar la primera letra de una cadena
 export function capitalize(s: string) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
 
+// Componente para el ícono de "ojo" (EyeIcon)
 export const EyeIcon = (props: IconSvgProps) => {
   return (
     <svg
@@ -68,6 +72,7 @@ export const EyeIcon = (props: IconSvgProps) => {
   );
 };
 
+// Componente para el ícono de "eliminar" (DeleteIcon)
 export const DeleteIcon = (props: IconSvgProps) => {
   return (
     <svg
@@ -119,6 +124,7 @@ export const DeleteIcon = (props: IconSvgProps) => {
   );
 };
 
+// Componente para el ícono de "editar" (EditIcon)
 export const EditIcon = (props: IconSvgProps) => {
   return (
     <svg
@@ -159,6 +165,7 @@ export const EditIcon = (props: IconSvgProps) => {
   );
 };
 
+// Componente para el ícono de "más" (PlusIcon)
 export const PlusIcon = ({
   size = 24,
   width,
@@ -190,6 +197,7 @@ export const PlusIcon = ({
   );
 };
 
+// Componente para el ícono de "puntos verticales" (VerticalDotsIcon)
 export const VerticalDotsIcon = ({
   size = 24,
   width,
@@ -215,6 +223,7 @@ export const VerticalDotsIcon = ({
   );
 };
 
+// Componente para el ícono de "búsqueda" (SearchIcon)
 export const SearchIcon = (props: IconSvgProps) => {
   return (
     <svg
@@ -245,6 +254,7 @@ export const SearchIcon = (props: IconSvgProps) => {
   );
 };
 
+// Componente para el ícono de "flecha hacia abajo" (ChevronDownIcon)
 export const ChevronDownIcon = ({
   strokeWidth = 1.5,
   ...otherProps
@@ -272,14 +282,17 @@ export const ChevronDownIcon = ({
   );
 };
 
+// Mapa de colores para los diferentes estados de un chip (etiqueta).
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
+  active: "success", // Estado activo con color verde.
+  paused: "danger", // Estado pausado con color rojo.
+  vacation: "warning", // Estado de vacaciones con color amarillo.
 };
 
+// URL de la API, recuperada desde las variables de entorno.
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+// Componente principal de la tabla de hoteles
 export default function TableHotels({
   columns,
   statusOptions,
@@ -308,8 +321,10 @@ export default function TableHotels({
   setLoading: (loading: boolean) => void;
   type?: "allHotels" | "hotel";
 }) {
+  // Hook para manejar el estado del modal
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  // Estados de los datos enviados en el formulario
   const [submitted, setSubmitted] = React.useState<{
     [k: string]: FormDataEntryValue;
   } | null>(null);
@@ -331,6 +346,7 @@ export default function TableHotels({
     max_rooms: 0,
   });
 
+  // Función para crear un hotel
   const createHotel = async (hotelData: {
     name: string;
     address: string;
@@ -364,6 +380,7 @@ export default function TableHotels({
     }
   };
 
+  // Función para eliminar un hotel
   const deleteHotel = async (hotelId: any) => {
     try {
       const response = await fetch(
@@ -396,6 +413,7 @@ export default function TableHotels({
     }
   };
 
+  // Función para actualizar un hotel
   const updateHotel = async (
     hotelId: any,
     updatedData: {
@@ -434,6 +452,7 @@ export default function TableHotels({
     }
   };
 
+  // Función que maneja el envío del formulario
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -441,6 +460,7 @@ export default function TableHotels({
 
     setSubmitted(data);
 
+    // Según la acción seleccionada (Agregar, Eliminar, Editar), realizar la operación correspondiente
     if (action.action === "Eliminar") {
 
       await deleteHotel(action.id);
@@ -483,6 +503,7 @@ export default function TableHotels({
     onOpenChange();
   };
 
+  // Estado de la tabla
   type User = (typeof users)[0];
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
@@ -502,6 +523,7 @@ export default function TableHotels({
 
   const hasSearchFilter = Boolean(filterValue);
 
+  // Filtrado de las columnas
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
 
@@ -510,6 +532,7 @@ export default function TableHotels({
     );
   }, [visibleColumns]);
 
+  // Filtrado de los usuarios basado en búsqueda y estado
   const filteredItems = React.useMemo(() => {
     let filteredUsers = [...users];
 
@@ -530,6 +553,7 @@ export default function TableHotels({
     return filteredUsers;
   }, [users, filterValue, statusFilter]);
 
+  // Paginación
   const pages = Math.ceil(filteredItems.length / rowsPerPage) || 1;
 
   const items = React.useMemo(() => {
@@ -539,6 +563,7 @@ export default function TableHotels({
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
+  // Ordenamiento de los elementos
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: User, b: User) => {
       const first = a[sortDescriptor.column as keyof User] as number;
@@ -549,8 +574,10 @@ export default function TableHotels({
     });
   }, [sortDescriptor, items]);
 
+  // Imágenes de los hoteles
   const listImagesHotels = ["https://www.decameron.com/images/thumbnail/cards/colombia/galeon/hotel.jpg", "https://www.decameron.com/images/thumbnail/cards/colombia/baru/hotel-3.jpg", "https://www.decameron.com/images/thumbnail/cards/colombia/cartagena/hotel-2.jpg", "https://www.decameron.com/images/thumbnail/cards/colombia/san-pedro/hotel-3.jpg", "https://www.decameron.com/images/thumbnail/cards/colombia/aquarium/hotel.jpg", "https://www.decameron.com/images/thumbnail/cards/colombia/isleno/hotel-3.jpg"]
 
+  // Renderizar las celdas de la tabla
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
 
