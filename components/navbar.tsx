@@ -1,6 +1,4 @@
-import {
-  Navbar as HeroUINavbar
-} from "@heroui/navbar";
+import { Navbar as HeroUINavbar } from "@heroui/navbar";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 
