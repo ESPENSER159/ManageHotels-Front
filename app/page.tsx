@@ -6,7 +6,7 @@ import logo from "@/public/logo-decameron.png";
 
 export const columns = [
   { name: "ID", uid: "id", sortable: true },
-  { name: "NOMBRE", uid: "name", sortable: true },
+  { name: "HOTEL", uid: "name", sortable: true },
   { name: "CIUDAD", uid: "city", sortable: true },
   { name: "DIRECCIÓN", uid: "address", sortable: true },
   { name: "NIT", uid: "nit" },

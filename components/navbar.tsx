@@ -4,7 +4,7 @@ import { ThemeSwitch } from "@/components/theme-switch";
 
 export const Navbar = () => {
   return (
-    <HeroUINavbar maxWidth="xl" position="sticky">
+    <HeroUINavbar maxWidth="xl">
       <ThemeSwitch />
     </HeroUINavbar>
   );
