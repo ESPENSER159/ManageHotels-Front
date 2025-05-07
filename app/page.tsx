@@ -10,7 +10,7 @@ import CreateTable from "@/components/table-hotels";
 import logo from "@/public/logo-decameron.png";
 
 // Definimos las columnas que tendrá la tabla, con su nombre, id y si se pueden ordenar
-export const columns = [
+const columns = [
   { name: "ID", uid: "id", sortable: true },
   { name: "HOTEL", uid: "name", sortable: true },
   { name: "CIUDAD", uid: "city", sortable: true },
@@ -21,7 +21,7 @@ export const columns = [
 ];
 
 // Opciones de estado que se podrían usar para los hoteles (aunque aquí no se usan directamente)
-export const statusOptions = [
+const statusOptions = [
   { name: "Active", uid: "active" },
   { name: "Paused", uid: "paused" },
   { name: "Vacation", uid: "vacation" },
@@ -37,7 +37,7 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-export default function Home() {
+export default function Page() {
   // Estado para guardar los hoteles y saber si está cargando
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
