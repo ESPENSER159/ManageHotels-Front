@@ -251,7 +251,6 @@ export default function TabelRooms({ users, setLoading, IdHotel }: { users: any[
                 description: String(error),
                 color: "danger",
             });
-            console.error("Error:", error);
             throw error;
         }
     };
@@ -289,7 +288,6 @@ export default function TabelRooms({ users, setLoading, IdHotel }: { users: any[
                 description: String(error),
                 color: "danger",
             });
-            console.error("Error:", error);
             throw error;
         }
     };
@@ -301,46 +299,34 @@ export default function TabelRooms({ users, setLoading, IdHotel }: { users: any[
         setSubmitted(data);
 
         if (action.action === "Eliminar") {
-            try {
-                await deleteRoom(action.id);
+            await deleteRoom(action.id);
 
-                addToast({
-                    description: "Habitación(es) eliminada(s) correctamente",
-                    color: "success",
-                });
-            } catch (error) {
-                console.error("Falló la eliminación del hotel:", error);
-            }
+            addToast({
+                description: "Habitación(es) eliminada(s) correctamente",
+                color: "success",
+            });
         } else if (action.action === "Agregar") {
-            try {
-                await createRoom({
-                    quantity: data.rooms as string,
-                    room_type_id: data.type as string,
-                    accommodation_id: data.accommodation as string,
-                });
+            await createRoom({
+                quantity: data.rooms as string,
+                room_type_id: data.type as string,
+                accommodation_id: data.accommodation as string,
+            });
 
-                addToast({
-                    description: "Habitacion(es) creada(s) correctamente",
-                    color: "success",
-                });
-            } catch (error) {
-                console.error("Falló la creación de la(s) habitacion(es):", error);
-            }
+            addToast({
+                description: "Habitacion(es) creada(s) correctamente",
+                color: "success",
+            });
         } else if (action.action === "Editar") {
-            try {
-                await updateRoom(action.id, {
-                    quantity: data.rooms as string,
-                    room_type_id: data.type as string,
-                    accommodation_id: data.accommodation as string,
-                });
+            await updateRoom(action.id, {
+                quantity: data.rooms as string,
+                room_type_id: data.type as string,
+                accommodation_id: data.accommodation as string,
+            });
 
-                addToast({
-                    description: "Habitacion(es) actualizada(s) correctamente",
-                    color: "success",
-                });
-            } catch (error) {
-                console.error("Falló la actualización:", error);
-            }
+            addToast({
+                description: "Habitacion(es) actualizada(s) correctamente",
+                color: "success",
+            });
         }
 
         setLoading(true);

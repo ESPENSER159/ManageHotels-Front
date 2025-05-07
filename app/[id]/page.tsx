@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import logo from "@/public/logo-decameron.png";
 import { useParams } from 'next/navigation';
 import { Link } from '@heroui/link'
-import { Button, Card, CardBody, CardHeader, Image } from "@heroui/react";
+import { Button, Card, CardBody, Image } from "@heroui/react";
 import TabelRooms from "@/components/table-rooms";
 
 export default function Hotel() {
@@ -26,8 +26,6 @@ export default function Hotel() {
                     }
                     const data = await response.json();
 
-                    console.log(data);
-
                     let getRooms = data.rooms.map((room: any) => {
                         return {
                             hotel_id: room.hotel_id,
@@ -39,7 +37,6 @@ export default function Hotel() {
                             accommodation: room.accommodation.name,
                         }
                     });
-                    console.log(getRooms);
 
                     setHotel(data);
                     setRooms(getRooms);

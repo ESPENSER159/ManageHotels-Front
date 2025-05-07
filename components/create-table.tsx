@@ -353,16 +353,14 @@ export default function TableHotels({
 
       const data = await response.json();
 
-      return data; // Retorna el hotel creado con su ID
+      return data;
     } catch (error) {
       addToast({
         description: String(error),
         color: "danger",
       });
 
-      console.error("Error:", error);
-
-      throw error; // Puedes manejar este error en el componente que llame a esta función
+      throw error;
     }
   };
 
@@ -382,9 +380,7 @@ export default function TableHotels({
         throw new Error("Error al eliminar el hotel");
       }
 
-      // Algunas APIs devuelven contenido en DELETE, otras no
       if (response.status !== 204) {
-        // 204 No Content
         const data = await response.json();
 
         return data;
@@ -396,7 +392,6 @@ export default function TableHotels({
         description: String(error),
         color: "danger",
       });
-      console.error("Error:", error);
       throw error;
     }
   };
@@ -429,13 +424,12 @@ export default function TableHotels({
 
       const data = await response.json();
 
-      return data; // Retorna el hotel actualizado
+      return data;
     } catch (error) {
       addToast({
         description: String(error),
         color: "danger",
       });
-      console.error("Error:", error);
       throw error;
     }
   };
@@ -448,54 +442,41 @@ export default function TableHotels({
     setSubmitted(data);
 
     if (action.action === "Eliminar") {
-      try {
-        const result = await deleteHotel(action.id);
 
-        console.log("Hotel eliminado:", result);
-        addToast({
-          description: "Hotel eliminado correctamente",
-          color: "success",
-        });
-      } catch (error) {
-        console.error("Falló la eliminación del hotel:", error);
-      }
+      await deleteHotel(action.id);
+
+      addToast({
+        description: "Hotel eliminado correctamente",
+        color: "success",
+      });
     } else if (action.action === "Agregar") {
-      try {
-        const newHotel = await createHotel({
-          name: data.name as string,
-          address: data.address as string,
-          city: data.city as string,
-          nit: data.nit as string,
-          max_rooms: Number(data.max_rooms),
-        });
 
-        console.log("Hotel creado:", newHotel);
+      await createHotel({
+        name: data.name as string,
+        address: data.address as string,
+        city: data.city as string,
+        nit: data.nit as string,
+        max_rooms: Number(data.max_rooms),
+      });
 
-        addToast({
-          description: "Hotel creado correctamente",
-          color: "success",
-        });
-      } catch (error) {
-        console.error("Falló la creación del hotel:", error);
-      }
+      addToast({
+        description: "Hotel creado correctamente",
+        color: "success",
+      });
     } else if (action.action === "Editar") {
-      try {
-        const updatedHotel = await updateHotel(action.id, {
-          name: data.name as string,
-          address: data.address as string,
-          city: data.city as string,
-          nit: data.nit as string,
-          max_rooms: Number(data.max_rooms),
-        });
 
-        console.log("Hotel actualizado:", updatedHotel);
-        addToast({
-          description: "Hotel actualizado correctamente",
-          color: "success",
-        });
-      } catch (error) {
-        console.error("Falló la actualización:", error);
-      }
+      await updateHotel(action.id, {
+        name: data.name as string,
+        address: data.address as string,
+        city: data.city as string,
+        nit: data.nit as string,
+        max_rooms: Number(data.max_rooms),
+      });
+
+      addToast({
+        description: "Hotel actualizado correctamente",
+        color: "success",
+      });
     }
 
     setLoading(true);
