@@ -37,6 +37,9 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
+// URL de la API, recuperada desde las variables de entorno.
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export default function Page() {
   // Estado para guardar los hoteles y saber si está cargando
   const [hotels, setHotels] = useState([]);
@@ -47,7 +50,7 @@ export default function Page() {
     const fetchHotels = async () => {
       try {
         // Llamada a la API para obtener la lista de hoteles
-        const response = await fetch("http://localhost:8000/api/hotels/");
+        const response = await fetch(`${apiUrl}/api/hotels`);
 
         // Si la respuesta no es exitosa, lanza un error
         if (!response.ok) {

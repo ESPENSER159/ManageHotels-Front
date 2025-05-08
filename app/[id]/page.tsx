@@ -7,10 +7,12 @@ import { useParams } from "next/navigation";
 // Importamos componentes UI (botón, tarjeta, imagen) de la librería HeroUI
 import { Link } from "@heroui/link";
 import { Button, Card, CardBody, Image } from "@heroui/react";
-
 import logo from "@/public/logo-decameron.png";
 // Importamos el componente que muestra la tabla de habitaciones
 import TabelRooms from "@/components/table-rooms";
+
+// URL de la API, recuperada desde las variables de entorno.
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Hotel() {
   // Estados
@@ -30,7 +32,7 @@ export default function Hotel() {
         try {
           // Llamada a la API para obtener los datos del hotel por ID
           const response = await fetch(
-            `http://localhost:8000/api/hotels/${params.id}`,
+            `${apiUrl}/api/hotels/${params.id}`,
           );
 
           if (!response.ok) {
